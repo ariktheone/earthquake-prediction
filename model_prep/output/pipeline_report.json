@@ -1,0 +1,21 @@
+{
+  "best_model": "Extra Trees (tuned)",
+  "best_params": {
+    "model__n_estimators": 300,
+    "model__min_samples_split": 5,
+    "model__min_samples_leaf": 4,
+    "model__max_depth": 20
+  },
+  "test_r2": 0.3296511017070588,
+  "test_mae": 0.2522074442875914,
+  "test_rmse": 0.3462914902845565,
+  "test_mape_pct": 7.1206588357137095,
+  "explained_variance": 0.33015599980905874,
+  "n_features": 59,
+  "n_train_samples": 12618,
+  "n_test_samples": 5409,
+  "test_size": 0.3,
+  "total_pipeline_time_sec": 1683.4,
+  "models_evaluated": 11,
+  "models_tuned": 3
+}
