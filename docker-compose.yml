@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./model_prep/output:/app/model_prep/output
+    restart: unless-stopped

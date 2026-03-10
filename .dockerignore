@@ -1,0 +1,17 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+.devcontainer/
+paper/
+ML_writup.pdf
+README.md
+LICENSE
+*.log
+*.pkl
+model_prep/output/best_model.joblib
+.DS_Store
+Thumbs.db

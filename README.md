@@ -11,6 +11,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Purpose](https://img.shields.io/badge/Purpose-Educational%20%26%20Research-orange)](#disclaimer)
 [![Paper](https://img.shields.io/badge/Research%20Paper-PDF-blue?logo=adobeacrobatreader&logoColor=white)](ML_writup.pdf)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](#docker)
 
 </div>
 
@@ -521,6 +522,24 @@ This will:
 5. Export the best model and reports to `model_prep/output/`
 
 > Pipeline takes ~28 minutes on a standard machine.
+
+### Docker
+
+```bash
+# Using Docker Compose (recommended)
+docker compose up --build
+
+# Or using Docker directly
+docker build -t earthquake-prediction .
+docker run -p 8501:8501 earthquake-prediction
+```
+
+The app will be available at `http://localhost:8501`.
+
+> **Note:** The Docker image does not include `best_model.joblib` (80 MB). Mount it via volume or run the pipeline inside the container:
+> ```bash
+> docker compose up  # auto-mounts model_prep/output/
+> ```
 
 ### GitHub Codespaces
 
