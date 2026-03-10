@@ -10,6 +10,7 @@
 [![XGBoost](https://img.shields.io/badge/XGBoost-2.1-006600?logo=xgboost)](https://xgboost.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Purpose](https://img.shields.io/badge/Purpose-Educational%20%26%20Research-orange)](#disclaimer)
+[![Paper](https://img.shields.io/badge/Research%20Paper-PDF-blue?logo=adobeacrobatreader&logoColor=white)](ML_writup.pdf)
 
 </div>
 
@@ -31,6 +32,7 @@
 - [Demo Modes](#demo-modes)
 - [Architecture](#architecture)
 - [Project Structure](#project-structure)
+- [Data Exploration & Analysis](#data-exploration--analysis)
 - [ML Pipeline](#ml-pipeline)
   - [Dataset](#dataset)
   - [Feature Engineering (59 Features)](#feature-engineering-59-features)
@@ -38,6 +40,7 @@
   - [Benchmark Results](#benchmark-results)
   - [Hyperparameter Tuning](#hyperparameter-tuning)
   - [Feature Importance](#feature-importance)
+- [Research Paper](#research-paper)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
@@ -60,6 +63,8 @@ This project provides two integrated capabilities:
 2. **ML-Powered Magnitude Estimation** — An industry-standard machine learning pipeline that trains 11 regression algorithms on 18,030 California earthquakes (1966–2007), performs hyperparameter tuning, and uses the best model (Extra Trees, R² = 0.3297) to generate magnitude estimates in the app.
 
 Both modes are accessible from a single Streamlit interface with a sidebar toggle, complete with automatic dark/light theme adaptation, comprehensive disclaimers, and a full in-app model benchmark dashboard with mathematical metric definitions.
+
+> **📄 Full Research Paper:** A detailed IEEE-style academic writeup covering methodology, results, and analysis is available as [ML_writup.pdf](ML_writup.pdf).
 
 ---
 
@@ -151,7 +156,9 @@ earthquake-prediction/
 ├── app2.py                             # Legacy V1 app (deprecated)
 ├── requirements.txt                    # Python dependencies
 ├── README.md                           # This file
-├── rf_model_final.pkl                  # Legacy Random Forest model (for app2.py)
+├── LICENSE                             # MIT License
+├── .gitignore                          # Git ignore rules
+├── ML_writup.pdf                       # IEEE-style research paper (compiled)
 │
 ├── data/
 │   └── Earthquake_data_processed.csv   # 18,030 rows — California (NCSN, 1966–2007)
@@ -171,9 +178,68 @@ earthquake-prediction/
 │       ├── features.json              # Feature name list (for inference)
 │       └── pipeline_report.json       # Full pipeline summary
 │
+├── paper/                              # Research figures
+│   └── figures/                        # 10 high-res (300 DPI) analysis plots
+│       ├── fig1_magnitude_distribution.png
+│       ├── fig2_spatial_distribution.png
+│       ├── fig3_depth_vs_magnitude.png
+│       ├── fig4_temporal_distribution.png
+│       ├── fig5_model_comparison.png
+│       ├── fig6_tuned_vs_initial.png
+│       ├── fig7_feature_importance.png
+│       ├── fig8_feature_categories.png
+│       ├── fig9_correlation_heatmap.png
+│       └── fig10_metric_radar.png
+│
 └── .devcontainer/
     └── devcontainer.json              # GitHub Codespaces / Dev Container config
 ```
+
+---
+
+## Data Exploration & Analysis
+
+Before building the ML pipeline, we performed extensive exploratory data analysis on the 18,030 NCSN catalog events. The following visualizations reveal key patterns in the data:
+
+### Magnitude Distribution
+
+The magnitude distribution follows the expected Gutenberg-Richter power law — the majority of events cluster near M3.0 with a right-skewed tail extending to M7.39.
+
+<p align="center">
+  <img src="paper/figures/fig1_magnitude_distribution.png" alt="Magnitude Distribution" width="600">
+</p>
+
+### Spatial Distribution of Epicenters
+
+Epicenters cluster along known California fault systems, particularly the San Andreas Fault and its subsidiaries. Color encodes magnitude — larger events are scattered but concentrated in fault zones.
+
+<p align="center">
+  <img src="paper/figures/fig2_spatial_distribution.png" alt="Spatial Distribution" width="600">
+</p>
+
+### Depth vs. Magnitude
+
+Most events are shallow (<20 km) with no strong depth-magnitude trend, consistent with California's predominantly shallow crustal seismicity.
+
+<p align="center">
+  <img src="paper/figures/fig3_depth_vs_magnitude.png" alt="Depth vs Magnitude" width="600">
+</p>
+
+### Temporal Distribution
+
+Annual earthquake frequency and mean magnitude over the 41-year observation period (1966–2007). Event counts increase over time partly due to expanding station coverage.
+
+<p align="center">
+  <img src="paper/figures/fig4_temporal_distribution.png" alt="Temporal Distribution" width="600">
+</p>
+
+### Feature Correlation Heatmap
+
+Weak linear correlations between raw features and magnitude (strongest: `No_of_Stations` at r ≈ 0.35) motivate the use of nonlinear ensemble methods.
+
+<p align="center">
+  <img src="paper/figures/fig9_correlation_heatmap.png" alt="Correlation Heatmap" width="600">
+</p>
 
 ---
 
@@ -318,6 +384,14 @@ All models are wrapped in a `sklearn.pipeline.Pipeline` with `StandardScaler` �
 | 10 | AdaBoost | 0.0736 | 0.0264 | 0.3375 | 0.4173 | 9.84 | 7.7s |
 | 11 | Decision Tree | 0.7158 | −0.1770 | 0.3083 | 0.4589 | 8.66 | 0.8s |
 
+<p align="center">
+  <img src="paper/figures/fig5_model_comparison.png" alt="Model Comparison" width="600">
+</p>
+
+<p align="center">
+  <img src="paper/figures/fig10_metric_radar.png" alt="Performance Radar - Top 5 Models" width="550">
+</p>
+
 ### Hyperparameter Tuning
 
 Top 3 models tuned with **RandomizedSearchCV** (20 iterations, 5-fold CV):
@@ -336,6 +410,10 @@ max_depth       = 20
 min_samples_split = 5
 min_samples_leaf  = 4
 ```
+
+<p align="center">
+  <img src="paper/figures/fig6_tuned_vs_initial.png" alt="Tuned vs Initial Comparison" width="650">
+</p>
 
 **Metric Definitions:**
 
@@ -373,6 +451,33 @@ mag_rolling_max_30      ██            1.62%
 
 `No_of_Stations` (12%) is the strongest predictor — more recording stations correlate with higher magnitudes due to detection bias and network geometry.
 
+<p align="center">
+  <img src="paper/figures/fig7_feature_importance.png" alt="Feature Importance - Top 20" width="550">
+</p>
+
+<p align="center">
+  <img src="paper/figures/fig8_feature_categories.png" alt="Feature Category Contribution" width="450">
+</p>
+
+---
+
+## Research Paper
+
+A full IEEE Transactions-style academic paper accompanies this project:
+
+**📄 [ML_writup.pdf](ML_writup.pdf)** — *"Earthquake Magnitude Estimation Using Ensemble Machine Learning with Engineered Spatiotemporal Features"*
+
+The paper covers:
+- **Introduction** — Scientific context and motivation for catalog-based magnitude estimation
+- **Related Work** — Survey of ML in seismology (neural networks, SVMs, ensemble methods)
+- **Dataset** — Detailed description of the NCSN catalog (18,030 events, 13 columns)
+- **Methodology** — Feature engineering (59 features), cyclic encoding equations, rolling statistics formulas, leakage prevention, model selection, evaluation protocol with mathematical metric definitions (R², MAE, RMSE, MAPE, EV)
+- **Experimental Results** — Full 11-model comparison, hyperparameter tuning, feature importance analysis
+- **Discussion** — Interpretation of R² ≈ 0.33, station count as top predictor, ensemble superiority, overfitting patterns, limitations, ethical considerations
+- **Conclusion** — Summary and future work (waveform deep learning, transfer learning, probabilistic regression)
+
+All figures in the paper are available at high resolution (300 DPI) in [`paper/figures/`](paper/figures/).
+
 ---
 
 ## Installation
@@ -386,7 +491,7 @@ mag_rolling_max_30      ██            1.62%
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/earthquake-prediction.git
+git clone https://github.com/ariktheone/earthquake-prediction.git
 cd earthquake-prediction
 
 # Create virtual environment
