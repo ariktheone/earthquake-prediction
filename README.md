@@ -12,6 +12,9 @@
 [![Purpose](https://img.shields.io/badge/Purpose-Educational%20%26%20Research-orange)](#disclaimer)
 [![Paper](https://img.shields.io/badge/Research%20Paper-PDF-blue?logo=adobeacrobatreader&logoColor=white)](ML_writup.pdf)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](#docker)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://earthquake-risk-assessment.streamlit.app/)
+
+**[🚀 Try the Live App →](https://earthquake-risk-assessment.streamlit.app/)**
 
 </div>
 
@@ -65,7 +68,9 @@ This project provides two integrated capabilities:
 
 Both modes are accessible from a single Streamlit interface with a sidebar toggle, complete with automatic dark/light theme adaptation, comprehensive disclaimers, and a full in-app model benchmark dashboard with mathematical metric definitions.
 
-> **📄 Full Research Paper:** A detailed IEEE-style academic writeup covering methodology, results, and analysis is available as [ML_writup.pdf](ML_writup.pdf).
+> **� Live App:** [earthquake-risk-assessment.streamlit.app](https://earthquake-risk-assessment.streamlit.app/)
+>
+> **�📄 Full Research Paper:** A detailed IEEE-style academic writeup covering methodology, results, and analysis is available as [ML_writup.pdf](ML_writup.pdf).
 
 ---
 
